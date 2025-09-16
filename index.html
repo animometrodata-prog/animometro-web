@@ -6,14 +6,27 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>¿Cómo te sientes hoy?</h1>
+  <h1>Bienvenido al Animómetro</h1>
 
-  <div class="opciones">
-    <button class="emoji">😃<br><span>Motivado</span></button>
-    <button class="emoji">🙂<br><span>Tranquilo</span></button>
-    <button class="emoji">😐<br><span>Neutral</span></button>
-    <button class="emoji">😩<br><span>Cansado</span></button>
-    <button class="emoji">😟<br><span>Estresado</span></button>
+  <!-- Formulario de registro -->
+  <div id="registro">
+    <input type="text" id="nombre" placeholder="Tu nombre">
+    <br><br>
+    <input type="email" id="correo" placeholder="Tu correo">
+    <br><br>
+    <button id="btnRegistro">Entrar</button>
+  </div>
+
+  <!-- Opciones de ánimo (ocultas al inicio) -->
+  <div id="encuesta" style="display:none;">
+    <h2>¿Cómo te sientes hoy?</h2>
+    <div class="opciones">
+      <button class="emoji">😃<br><span>Motivado</span></button>
+      <button class="emoji">🙂<br><span>Tranquilo</span></button>
+      <button class="emoji">😐<br><span>Neutral</span></button>
+      <button class="emoji">😩<br><span>Cansado</span></button>
+      <button class="emoji">😟<br><span>Estresado</span></button>
+    </div>
   </div>
 
   <script src="script.js"></script>
