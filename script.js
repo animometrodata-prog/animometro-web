@@ -1,4 +1,35 @@
-// Seleccionamos todos los botones de emoji
+// Referencias a elementos
+const registroDiv = document.getElementById("registro");
+const encuestaDiv = document.getElementById("encuesta");
+const btnRegistro = document.getElementById("btnRegistro");
+
+// Si ya hay datos guardados, saltamos el registro
+if (localStorage.getItem("nombre") && localStorage.getItem("correo")) {
+  registroDiv.style.display = "none";
+  encuestaDiv.style.display = "block";
+}
+
+// Cuando el usuario se registra
+btnRegistro.addEventListener("click", () => {
+  const nombre = document.getElementById("nombre").value;
+  const correo = document.getElementById("correo").value;
+
+  if (nombre && correo) {
+    // Guardamos en localStorage
+    localStorage.setItem("nombre", nombre);
+    localStorage.setItem("correo", correo);
+
+    // Ocultamos el registro y mostramos las caritas
+    registroDiv.style.display = "none";
+    encuestaDiv.style.display = "block";
+  } else {
+    alert("Por favor llena ambos campos.");
+  }
+});
+
+// ----------------------
+// Lógica de las caritas
+// ----------------------
 const botones = document.querySelectorAll(".emoji");
 
 // Creamos un elemento para mostrar el mensaje
@@ -8,14 +39,13 @@ mensaje.style.fontSize = "1.2rem";
 mensaje.style.fontWeight = "bold";
 document.body.appendChild(mensaje);
 
-// Agregamos evento a cada botón
+// Evento para cada carita
 botones.forEach(boton => {
   boton.addEventListener("click", () => {
-    // Obtenemos el texto (ejemplo: "Motivado")
     const estado = boton.querySelector("span").textContent;
     const emoji = boton.textContent.trim().charAt(0);
+    const nombre = localStorage.getItem("nombre") || "Usuario";
 
-    // Mostramos el mensaje
-    mensaje.textContent = `Elegiste ${estado} ${emoji}`;
+    mensaje.textContent = `${nombre}, elegiste ${estado} ${emoji}`;
   });
 });
