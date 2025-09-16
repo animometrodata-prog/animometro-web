@@ -8,11 +8,13 @@ body {
 
 h1 {
   color: #333;
+  font-size: 1.5rem;
 }
 
 h2 {
   margin-top: 30px;
   color: #444;
+  font-size: 1.2rem;
 }
 
 .opciones {
@@ -31,6 +33,7 @@ button.emoji {
   border-radius: 10px;
   cursor: pointer;
   transition: transform 0.2s, border-color 0.2s;
+  width: 100px;
 }
 
 button.emoji:hover {
@@ -44,9 +47,51 @@ button span {
   font-size: 1rem;
 }
 
-/* 🔹 Estilo para el botón seleccionado */
 button.seleccionado {
-  border: 3px solid #007bff;  /* azul */
-  background-color: #e6f0ff;  /* fondo azul claro */
-  transform: scale(1.05);     /* un poquito más grande */
+  border: 3px solid #007bff;
+  background-color: #e6f0ff;
+  transform: scale(1.05);
+}
+
+textarea {
+  width: 60%;
+  max-width: 400px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+/* 🔹 Ajustes para pantallas pequeñas (celulares) */
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+  }
+
+  h2 {
+    font-size: 1rem;
+  }
+
+  .opciones {
+    gap: 10px;
+  }
+
+  button.emoji {
+    font-size: 1.8rem;
+    width: 80px;
+    padding: 10px;
+  }
+
+  button span {
+    font-size: 0.9rem;
+  }
+
+  textarea {
+    width: 90%;
+    font-size: 0.9rem;
+  }
 }
