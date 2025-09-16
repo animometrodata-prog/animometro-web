@@ -72,12 +72,27 @@ if (btnGuardar) {
       fecha: fecha
     };
 
-    // Guardamos en localStorage (historial)
+    // Guardamos en localStorage (historial interno del navegador)
     let historial = JSON.parse(localStorage.getItem("historial")) || [];
     historial.push(registro);
     localStorage.setItem("historial", JSON.stringify(historial));
 
-    alert("✅ Respuesta guardada con éxito");
+    // 🔹 Enviar también a Google Sheets usando tu URL
+    fetch("https://script.google.com/macros/s/AKfycbzFm7M7d0Qz8CUSRpZ8fw2dTMoXui-AZtSii8smjI8AjW0sUHJW6YJKndcf6Sf5eBAY/exec", {
+      method: "POST",
+      body: JSON.stringify(registro),
+      headers: { "Content-Type": "application/json" }
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log("Enviado a Google Sheets:", data);
+      alert("✅ Respuesta guardada en la nube");
+    })
+    .catch(err => {
+      console.error("Error:", err);
+      alert("❌ Hubo un problema al enviar a Google Sheets");
+    });
+
     comentarioInput.value = ""; // limpiar comentario
   });
 }
