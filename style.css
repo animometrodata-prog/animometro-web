@@ -1,0 +1,40 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  color: #333;
+}
+
+.opciones {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+button.emoji {
+  font-size: 2rem;
+  padding: 15px;
+  background: white;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+button.emoji:hover {
+  transform: scale(1.1);
+  border-color: #666;
+}
+
+button span {
+  display: block;
+  margin-top: 5px;
+  font-size: 1rem;
+}
