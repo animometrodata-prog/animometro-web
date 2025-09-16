@@ -17,7 +17,7 @@
     <button id="btnRegistro">Entrar</button>
   </div>
 
-  <!-- Opciones de ánimo (ocultas al inicio) -->
+  <!-- Encuesta (oculta al inicio) -->
   <div id="encuesta" style="display:none;">
     <h2>¿Cómo te sientes hoy?</h2>
     <div class="opciones">
@@ -26,6 +26,13 @@
       <button class="emoji">😐<br><span>Neutral</span></button>
       <button class="emoji">😩<br><span>Cansado</span></button>
       <button class="emoji">😟<br><span>Estresado</span></button>
+    </div>
+
+    <!-- Comentario opcional -->
+    <div id="comentarioBox" style="margin-top:20px;">
+      <textarea id="comentario" rows="3" cols="40" placeholder="Escribe un comentario (opcional)..."></textarea>
+      <br><br>
+      <button id="guardar">Guardar respuesta</button>
     </div>
   </div>
 
