@@ -1,226 +1,220 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.7">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#111827" />
+  <title>Animómetro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#F7F6F3;
+      --ink:#111827;
+      --muted:#6B7280;
+      --primary:#2563EB;
+      --ring:#111827;
+      --ok:#10B981;
+      --err:#EF4444;
+      --card:#FFFFFF;
+      --shadow:0 6px 30px rgba(17,24,39,.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--ink);
+      background:linear-gradient(180deg,#F8F7F4 0%,#F1F0EC 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      padding:24px;
+    }
+    .app{
+      width:100%;
+      max-width:880px;
+      background:var(--card);
+      border-radius:20px;
+      padding:28px;
+      box-shadow:var(--shadow);
+    }
+    h1{
+      font-size:clamp(1.25rem,2.2vw,1.8rem);
+      text-align:center;
+      margin:4px 0 22px;
+      letter-spacing:.2px;
+    }
+    .moods{
+      display:grid;
+      grid-template-columns: repeat(5,1fr);
+      gap:16px;
+    }
+    @media (max-width:780px){ .moods{grid-template-columns: repeat(3,1fr)} }
+    @media (max-width:520px){ .moods{grid-template-columns: repeat(2,1fr)} }
+    .mood{
+      background:transparent;
+      border:none;
+      cursor:pointer;
+      padding:6px 4px 10px;
+      text-align:center;
+      transition:transform .15s ease;
+      position:relative;
+    }
+    .mood:hover{ transform:translateY(-2px) }
+    .pill{
+      width:110px; height:110px;
+      border-radius:999px;
+      margin:0 auto 10px;
+      display:grid; place-items:center;
+      box-shadow:inset 0 0 0 1px rgba(17,24,39,.08), 0 8px 18px rgba(0,0,0,.06);
+      transition: box-shadow .18s ease, transform .18s ease;
+      font-weight:700; font-size:18px;
+      user-select:none;
+    }
+    .mood[data-color="motiv"] .pill{ background:radial-gradient(circle,#FFE585,#FFD54F) }
+    .mood[data-color="tranq"] .pill{ background:radial-gradient(circle,#CFF9EC,#A5E4D6) }
+    .mood[data-color="neut"]  .pill{ background:radial-gradient(circle,#F3F4F6,#E5E7EB) }
+    .mood[data-color="cans"]  .pill{ background:radial-gradient(circle,#FFE0DC,#FCD5CE) }
+    .mood[data-color="estr"]  .pill{ background:radial-gradient(circle,#FECACA,#FDA4AF) }
+    .label{ font-size:.95rem; font-weight:600 }
+    .mood.selected .pill{
+      box-shadow:0 0 0 4px var(--ring), 0 10px 24px rgba(0,0,0,.12);
+      transform:scale(1.04);
+    }
+    .check{
+      position:absolute; right:8px; top:8px;
+      width:22px; height:22px; border-radius:999px;
+      background:var(--ok); color:white;
+      display:none; align-items:center; justify-content:center;
+      font-size:14px; font-weight:700;
+      box-shadow:0 4px 10px rgba(16,185,129,.35);
+    }
+    .mood.selected .check{ display:flex }
+    .row{ display:grid; gap:14px; max-width:680px; margin:22px auto 0; }
+    .input{
+      width:100%; padding:14px;
+      border-radius:12px; border:1px solid #E5E7EB;
+      background:#FAFAFA; font-size:16px;
+    }
+    .hint{font-size:.9rem; color:var(--muted); margin-top:8px; text-align:center}
+    .actions{ margin-top:12px; display:flex; justify-content:center; }
+    .btn{
+      border:none; cursor:pointer;
+      border-radius:12px; padding:12px 18px;
+      font-weight:700; color:white; background:var(--primary);
+      box-shadow: 0 8px 18px rgba(37,99,235,.25);
+      transition: transform .15s ease, box-shadow .2s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); box-shadow:0 12px 24px rgba(37,99,235,.3) }
+    .status{ text-align:center; font-size:.98rem; min-height:24px; margin-top:6px }
+    .ok{ color:var(--ok) }
+    .err{ color:var(--err) }
+    footer{ margin-top:18px; text-align:center; color:var(--muted); font-size:.85rem; }
   </style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="es"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="theme-color" content="#111827" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Animómetro&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>:root{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--bg:#F7F6F3;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--ink:#111827;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--muted:#6B7280;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--primary:#2563EB;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--ring:#111827;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--ok:#10B981;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--err:#EF4444;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--card:#FFFFFF;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>--shadow:0 6px 30px rgba(17,24,39,.08);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>body{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin:0;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>color:var(--ink);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:linear-gradient(180deg,#F8F7F4 0%,#F1F0EC 100%);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:flex;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>align-items:center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>justify-content:center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding:24px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.app{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width:100%;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>max-width:880px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:var(--card);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:20px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding:28px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>box-shadow:var(--shadow);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>h1{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size:clamp(1.25rem,2.2vw,1.75rem);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-align:center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin:4px 0 22px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.moods{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:grid;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>grid-template-columns: repeat(5,1fr);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>gap:16px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>@media (max-width:780px){ .moods{grid-template-columns: repeat(3,1fr)} }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>@media (max-width:520px){ .moods{grid-template-columns: repeat(2,1fr)} }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.mood{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:transparent;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border:none;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>cursor:pointer;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>padding:6px 4px 10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>text-align:center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transition:transform .15s ease;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position:relative;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.mood:hover{ transform:translateY(-2px) }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.pill{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width:110px; height:110px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:999px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>margin:0 auto 10px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:grid; place-items:center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>box-shadow:inset 0 0 0 1px rgba(17,24,39,.08), 0 8px 18px rgba(0,0,0,.06);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transition: box-shadow .18s ease, transform .18s ease;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight:700; font-size:18px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.mood[data-color="motiv"] .pill{ background:radial-gradient(circle,#FFE585,#FFD54F) }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.mood[data-color="tranq"] .pill{ background:radial-gradient(circle,#CFF9EC,#A5E4D6) }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.mood[data-color="neut"]<span class="Apple-converted-space">  </span>.pill{ background:radial-gradient(circle,#F3F4F6,#E5E7EB) }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.mood[data-color="cans"]<span class="Apple-converted-space">  </span>.pill{ background:radial-gradient(circle,#FFE0DC,#FCD5CE) }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.mood[data-color="estr"]<span class="Apple-converted-space">  </span>.pill{ background:radial-gradient(circle,#FECACA,#FDA4AF) }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.label{ font-size:.95rem; font-weight:600 }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.mood.selected .pill{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>box-shadow:0 0 0 4px var(--ring), 0 10px 24px rgba(0,0,0,.12);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transform:scale(1.04);</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.check{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>position:absolute; right:8px; top:8px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width:22px; height:22px; border-radius:999px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:var(--ok); color:white;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>display:none; align-items:center; justify-content:center;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-size:14px; font-weight:700;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.mood.selected .check{ display:flex }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.row{ display:grid; gap:14px; max-width:680px; margin:22px auto 0; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.input{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>width:100%; padding:14px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:12px; border:1px solid #E5E7EB;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>background:#FAFAFA; font-size:16px;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.actions{ margin-top:12px; display:flex; justify-content:center; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.btn{</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border:none; cursor:pointer;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>border-radius:12px; padding:12px 18px;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>font-weight:700; color:white; background:var(--primary);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>box-shadow: 0 8px 18px rgba(37,99,235,.25);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>transition: transform .15s ease, box-shadow .2s ease;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.btn:hover{ transform: translateY(-1px); box-shadow:0 12px 24px rgba(37,99,235,.3) }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.status{ text-align:center; font-size:.98rem; min-height:24px; margin-top:6px }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.ok{ color:var(--ok) }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.err{ color:var(--err) }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>footer{ margin-top:18px; text-align:center; color:var(--muted); font-size:.85rem; }</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;main class="app"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h1&gt;¿Cómo te sientes al iniciar tu jornada hoy?&lt;/h1&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;section class="moods"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="mood" data-estado="Motivado" data-color="motiv"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="check"&gt;✓&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="pill"&gt;🙂&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="label"&gt;Motivado&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="mood" data-estado="Tranquilo" data-color="tranq"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="check"&gt;✓&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="pill"&gt;😌&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="label"&gt;Tranquilo&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="mood" data-estado="Neutral" data-color="neut"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="check"&gt;✓&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="pill"&gt;😐&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="label"&gt;Neutral&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="mood" data-estado="Cansado" data-color="cans"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="check"&gt;✓&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="pill"&gt;🥱&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="label"&gt;Cansado&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="mood" data-estado="Estresado" data-color="estr"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="check"&gt;✓&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="pill"&gt;😣&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="label"&gt;Estresado&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;section class="row"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;input class="input" id="usuario" type="email" placeholder="Tu correo" required /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;input class="input" id="comentario" type="text" placeholder="Comentario opcional" maxlength="140" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="actions"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>&lt;button class="btn" id="enviarBtn"&gt;Enviar&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;div id="status" class="status"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/section&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;footer&gt;Animómetro · MVP Web&lt;/footer&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/main&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let estado = "";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const moodButtons = document.querySelectorAll('.mood');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const statusEl = document.getElementById('status');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const btnEnviar = document.getElementById('enviarBtn');</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>moodButtons.forEach(btn =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>btn.addEventListener('click', () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>moodButtons.forEach(b =&gt; b.classList.remove('selected'));</p>
-<p class="p1"><span class="Apple-converted-space">        </span>btn.classList.add('selected');</p>
-<p class="p1"><span class="Apple-converted-space">        </span>estado = btn.dataset.estado;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>statusEl.textContent = `Seleccionaste: ${estado}`;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>statusEl.className = 'status';</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>});</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>async function enviar(){</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const usuario = document.getElementById('usuario').value.trim();</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const comentario = document.getElementById('comentario').value.trim();</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!estado){ statusEl.textContent='⚠️ Selecciona un estado.'; statusEl.className='status err'; return; }</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if(!usuario){ statusEl.textContent='⚠️ Escribe tu correo.'; statusEl.className='status err'; return; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>const WEBAPP_URL = "AQUI_VA_TU_URL_WEBAPP";</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>try{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>btnEnviar.disabled = true;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>statusEl.textContent = 'Enviando…'; statusEl.className='status';</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>const resp = await fetch(WEBAPP_URL, {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>method:'POST',</p>
-<p class="p1"><span class="Apple-converted-space">          </span>headers:{'Content-Type':'application/json'},</p>
-<p class="p1"><span class="Apple-converted-space">          </span>body: JSON.stringify({ usuario, estado, comentario })</p>
-<p class="p1"><span class="Apple-converted-space">        </span>});</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const data = await resp.json().catch(()=&gt;({result:'error'}));</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">        </span>if(data.result==='success'){</p>
-<p class="p1"><span class="Apple-converted-space">          </span>statusEl.textContent='✅ Registro enviado con éxito.';</p>
-<p class="p1"><span class="Apple-converted-space">          </span>statusEl.className='status ok';</p>
-<p class="p1"><span class="Apple-converted-space">          </span>document.getElementById('comentario').value='';</p>
-<p class="p1"><span class="Apple-converted-space">          </span>moodButtons.forEach(b =&gt; b.classList.remove('selected'));</p>
-<p class="p1"><span class="Apple-converted-space">          </span>estado="";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>statusEl.textContent='❌ Error al enviar.'; statusEl.className='status err';</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}catch(e){</p>
-<p class="p1"><span class="Apple-converted-space">        </span>statusEl.textContent='❌ Error de conexión.'; statusEl.className='status err';</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}finally{</p>
-<p class="p1"><span class="Apple-converted-space">        </span>btnEnviar.disabled = false;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>btnEnviar.addEventListener('click', enviar);</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+  <main class="app">
+    <h1>¿Cómo te sientes al iniciar tu jornada hoy?</h1>
+
+    <section class="moods" aria-label="Selecciona tu estado de ánimo">
+      <button class="mood" type="button" data-estado="Motivado" data-color="motiv" aria-label="Motivado">
+        <div class="check">✓</div>
+        <div class="pill">🙂</div>
+        <div class="label">Motivado</div>
+      </button>
+      <button class="mood" type="button" data-estado="Tranquilo" data-color="tranq" aria-label="Tranquilo">
+        <div class="check">✓</div>
+        <div class="pill">😌</div>
+        <div class="label">Tranquilo</div>
+      </button>
+      <button class="mood" type="button" data-estado="Neutral" data-color="neut" aria-label="Neutral">
+        <div class="check">✓</div>
+        <div class="pill">😐</div>
+        <div class="label">Neutral</div>
+      </button>
+      <button class="mood" type="button" data-estado="Cansado" data-color="cans" aria-label="Cansado">
+        <div class="check">✓</div>
+        <div class="pill">🥱</div>
+        <div class="label">Cansado</div>
+      </button>
+      <button class="mood" type="button" data-estado="Estresado" data-color="estr" aria-label="Estresado">
+        <div class="check">✓</div>
+        <div class="pill">😣</div>
+        <div class="label">Estresado</div>
+      </button>
+    </section>
+
+    <p class="hint">Toca una carita. Luego escribe tu correo y comentario (opcional) y presiona Enviar.</p>
+
+    <section class="row" aria-label="Datos del registro">
+      <input class="input" id="usuario" type="email" placeholder="Tu correo (ej. nombre@correo.com)" autocomplete="email" required />
+      <input class="input" id="comentario" type="text" placeholder="Comentario opcional (máx. 140 caracteres)" maxlength="140" />
+      <div class="actions">
+        <button class="btn" id="enviarBtn" type="button">Enviar</button>
+      </div>
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+    </section>
+
+    <footer>Animómetro · MVP Web</footer>
+  </main>
+
+  <script>
+    // Manejo de selección
+    let estado = "";
+    const moodButtons = document.querySelectorAll('.mood');
+    const statusEl = document.getElementById('status');
+    const btnEnviar = document.getElementById('enviarBtn');
+
+    moodButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        moodButtons.forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        estado = btn.dataset.estado;
+        statusEl.textContent = `Seleccionaste: ${estado}`;
+        statusEl.className = 'status';
+      });
+    });
+
+    // Envío a Google Apps Script (cuando lo tengamos)
+    async function enviar(){
+      const usuario = document.getElementById('usuario').value.trim();
+      const comentario = document.getElementById('comentario').value.trim();
+
+      if(!estado){ statusEl.textContent='⚠️ Selecciona un estado de ánimo.'; statusEl.className='status err'; return; }
+      if(!usuario){ statusEl.textContent='⚠️ Escribe tu correo.'; statusEl.className='status err'; return; }
+
+      const WEBAPP_URL = "AQUI_VA_TU_URL_WEBAPP"; // <- reemplazar luego
+
+      try{
+        btnEnviar.disabled = true;
+        statusEl.textContent = 'Enviando…'; statusEl.className='status';
+
+        const resp = await fetch(WEBAPP_URL, {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ usuario, estado, comentario })
+        });
+        const data = await resp.json().catch(()=>({result:'error'}));
+
+        if(data.result==='success'){
+          statusEl.textContent='✅ Registro enviado con éxito. ¡Gracias!';
+          statusEl.className='status ok';
+          document.getElementById('comentario').value='';
+          moodButtons.forEach(b => b.classList.remove('selected'));
+          estado="";
+        } else {
+          statusEl.textContent='❌ Error al enviar.'; statusEl.className='status err';
+        }
+      }catch(e){
+        statusEl.textContent='❌ Error de conexión.'; statusEl.className='status err';
+      }finally{
+        btnEnviar.disabled = false;
+      }
+    }
+
+    btnEnviar.addEventListener('click', enviar);
+  </script>
 </body>
 </html>
