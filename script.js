@@ -30,17 +30,25 @@ if (btnRegistro) {
   });
 }
 
-// Variable temporal para guardar el estado elegido
+// Variables para guardar selección
 let estadoElegido = "";
+let emojiElegido = "";
 
 // Evento para elegir carita
 botones.forEach(boton => {
   boton.addEventListener("click", () => {
-    estadoElegido = boton.querySelector("span").textContent;
-    const emoji = boton.textContent.trim().charAt(0);
-    const nombre = localStorage.getItem("nombre") || "Usuario";
+    // Quitar selección previa
+    botones.forEach(b => b.classList.remove("seleccionado"));
 
-    alert(`${nombre}, elegiste ${estadoElegido} ${emoji}`);
+    // Marcar este botón como seleccionado
+    boton.classList.add("seleccionado");
+
+    // Guardar estado y emoji de forma limpia
+    estadoElegido = boton.querySelector("span").textContent;
+    emojiElegido = boton.textContent.trim().split("\n")[0]; // toma el emoji sin basura
+
+    const nombre = localStorage.getItem("nombre") || "Usuario";
+    alert(`${nombre}, elegiste ${estadoElegido} ${emojiElegido}`);
   });
 });
 
@@ -59,6 +67,7 @@ if (btnGuardar) {
       nombre: localStorage.getItem("nombre"),
       correo: localStorage.getItem("correo"),
       estado: estadoElegido,
+      emoji: emojiElegido,
       comentario: comentario,
       fecha: fecha
     };
